@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#111820">
+<link rel="manifest" href="manifest.webmanifest">
+<title>SiteTrack V1 - Quick Alarm</title>
+<style>
+:root{--bg:#f4f5f3;--card:#fff;--ink:#16202a;--muted:#6e7781;--line:#e4e7e9;--accent:#18a957;--nav:#111820;--orange:#f5a623;--red:#e95454;--purple:#8c62d9;--blue:#3787d8}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;color:var(--ink)}
+button,input,select,textarea{font:inherit}button{cursor:pointer}
+.app{max-width:560px;margin:auto;min-height:100vh;background:var(--bg);padding-bottom:78px}
+header{background:var(--nav);color:#fff;padding:18px 18px 16px;position:sticky;top:0;z-index:5}
+.top{display:flex;justify-content:space-between;align-items:center}.brand{font-size:21px;font-weight:800}.sub{font-size:12px;color:#b8c1c9;margin-top:2px}
+.iconbtn{border:0;background:#26323d;color:#fff;border-radius:12px;width:40px;height:40px;font-size:21px}
+main{padding:14px}.viewbar{display:flex;gap:6px;background:#e8ebed;padding:4px;border-radius:13px;margin-bottom:12px}
+.viewbar button{flex:1;border:0;background:transparent;border-radius:10px;padding:9px;font-weight:700;color:#65707a}.viewbar button.active{background:#fff;color:var(--ink);box-shadow:0 1px 4px #0001}
+.datebar{display:flex;justify-content:space-between;align-items:center;margin:8px 2px 12px;font-weight:800}.datebar button{border:0;background:transparent;font-size:22px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;margin-bottom:12px;box-shadow:0 2px 8px #00000008}
+.quote{font-weight:700;font-size:16px;line-height:1.35}.quote small{display:block;color:var(--muted);margin-top:7px;font-weight:500}
+.weather-link{display:block;color:inherit;text-decoration:none}.weather{display:flex;align-items:center;gap:13px;cursor:pointer}.weather-link:focus-visible{outline:3px solid var(--accent);outline-offset:3px;border-radius:18px}.temp{font-size:32px;font-weight:800}.weather small{color:var(--muted)}
+.sectiontitle{display:flex;justify-content:space-between;align-items:center;margin:16px 2px 8px;font-weight:800}.link{color:#1479d1;font-size:13px}
+.event{display:flex;gap:10px;align-items:stretch;padding:10px 0;border-bottom:1px solid var(--line)}.event:last-child{border-bottom:0}
+.dot{width:5px;border-radius:5px;background:var(--blue)}.event b{font-size:14px}.event small{display:block;color:var(--muted);margin-top:3px}.tag{margin-left:auto;align-self:center;font-size:11px;padding:5px 7px;border-radius:8px;background:#eef1f3}
+.jobhead{display:flex;justify-content:space-between;gap:10px}.jobname{font-weight:800}.pct{color:var(--accent);font-weight:800}.bar{height:7px;background:#e8ebed;border-radius:9px;overflow:hidden;margin:10px 0}.fill{height:100%;background:var(--accent);border-radius:9px}.metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.metric{background:#f7f8f8;border-radius:11px;padding:9px}.metric b{display:block}.metric small{color:var(--muted);font-size:10px}
+.week{display:grid;grid-template-columns:45px repeat(7,1fr);font-size:10px}.week .cell{min-height:64px;border:1px solid var(--line);background:#fff;padding:4px}.week .head{min-height:auto;text-align:center;font-weight:800;background:#f8f9f9}.pill{display:block;border-radius:6px;padding:4px;margin:2px 0;font-size:9px;overflow:hidden}.green{background:#d9f3e2}.orange{background:#fff0d5}.red{background:#ffdede}.purple{background:#e9defb}.blue{background:#dcecff}
+.month{display:grid;grid-template-columns:repeat(7,1fr);gap:2px}.mday{background:#fff;min-height:62px;border:1px solid var(--line);padding:5px;font-size:11px}.mday.today{outline:2px solid var(--ink);outline-offset:-2px}.dots{display:flex;gap:3px;margin-top:8px}.dots i{width:5px;height:5px;border-radius:50%;display:block}.actions{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}.action{border:1px solid var(--line);background:#fff;border-radius:14px;padding:13px;text-align:left;font-weight:700}.fab{position:fixed;right:18px;bottom:82px;width:58px;height:58px;border:0;border-radius:18px;background:var(--nav);color:#fff;font-size:28px;box-shadow:0 8px 24px #0003}
+nav{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid var(--line);height:68px;display:flex;justify-content:center;z-index:6}nav div{width:min(560px,100%);display:flex;justify-content:space-around;align-items:center}nav button{border:0;background:transparent;color:#737b83;font-size:11px;font-weight:700}nav button.active{color:var(--ink)}nav span{display:block;font-size:21px;margin-bottom:2px}
+.modal{position:fixed;inset:0;background:#0007;z-index:10;display:none;align-items:flex-end}.sheet{background:#fff;width:100%;max-width:560px;margin:auto;border-radius:22px 22px 0 0;padding:18px;max-height:90vh;overflow:auto}.sheet h2{margin-top:0}.field{margin:10px 0}.field label{display:block;font-size:12px;font-weight:800;margin-bottom:5px}.field input,.field select,.field textarea{width:100%;padding:11px;border:1px solid #d8dde1;border-radius:10px;background:#fff}.primary{width:100%;border:0;background:var(--nav);color:#fff;border-radius:11px;padding:13px;font-weight:800}.secondary{width:100%;border:1px solid var(--line);background:#fff;border-radius:11px;padding:11px;margin-top:8px}.deletebtn{width:100%;border:1px solid #f2caca;background:#fff7f7;color:#b42323;border-radius:11px;padding:10px;margin-top:8px;font-weight:700}.deleteicon{border:1px solid #f2caca;background:#fff7f7;color:#b42323;border-radius:10px;width:40px;height:40px;font-size:17px}.photo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}.photo-grid img{width:100%;aspect-ratio:1;border-radius:10px;object-fit:cover}
+.hidden{display:none!important}
+</style>
+</head>
+<body>
+<div class="app">
+<header><div class="top"><div><div class="brand">SiteTrack</div><div class="sub">Site Supervisor • V1</div></div><button class="iconbtn" type="button" onclick="openContextAdd()">＋</button></div></header>
+<main id="main"></main>
+</div>
+<nav><div>
+<button class="active" data-tab="calendar" onclick="setTab('calendar')"><span>▦</span>Calendar</button>
+<button data-tab="jobs" onclick="setTab('jobs')"><span>▣</span>Jobs</button>
+<button data-tab="tasks" onclick="setTab('tasks')"><span>☷</span>Tasks</button>
+<button data-tab="alerts" onclick="setTab('alerts')"><span>♧</span>Alerts</button>
+<button data-tab="more" onclick="setTab('more')"><span>•••</span>More</button>
+</div></nav>
+<button class="fab" onclick="openContextAdd()">＋</button>
+
+<div class="modal" id="modal"><div class="sheet" id="sheet"></div></div>
+
+<script>
+const STORE_KEY='sitetrack-v1';
+const today=new Date(); today.setHours(0,0,0,0);
+let data=JSON.parse(localStorage.getItem(STORE_KEY)||localStorage.getItem('siteflow')||'null')||{
+ jobs:[{id:1,name:'Riverside Apartments',people:['John','Mark','Steve','Dave','Chris','Ben'],status:'In progress',pct:58,allocated:240,used:128,onSite:42,usedMat:68,ordered:23,notes:'Concrete pour completed on Level 1. All inspections passed.',photos:[]}],
+ tasks:[
+ {id:1,date:fmt(today),time:'07:00',title:'Site setup & safety meeting',job:1,type:'blue',done:false},
+ {id:2,date:fmt(today),time:'09:00',title:'Concrete pour — Level 2',job:1,type:'green',done:false},
+ {id:3,date:fmt(today),time:'11:30',title:'Call steel supplier',job:1,type:'orange',done:false},
+ {id:4,date:fmt(today),time:'13:00',title:'Materials delivery',job:1,type:'purple',done:false},
+ {id:5,date:fmt(today),time:'15:00',title:'Site inspection',job:1,type:'blue',done:false}],
+ reminders:[{id:1,date:fmt(today),time:'11:30',title:'Call steel supplier'},{id:2,date:fmt(new Date(today.getTime()+86400000)),time:'11:00',title:'Order formwork'}],
+ countdowns:[]
+};
+data.countdowns=data.countdowns||[];
+let tab='calendar',view='day',cursor=new Date(today);
+function save(){localStorage.setItem(STORE_KEY,JSON.stringify(data))}
+function fmt(d){return d.toISOString().slice(0,10)}
+function nice(d,opt={weekday:'long',day:'numeric',month:'short',year:'numeric'}){return d.toLocaleDateString('en-AU',opt)}
+function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function job(id){return data.jobs.find(x=>x.id==id)}
+function render(){document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('active',b.dataset.tab===tab)); let m=document.getElementById('main'); if(tab==='calendar')m.innerHTML=calendar(); if(tab==='jobs')m.innerHTML=jobs(); if(tab==='tasks')m.innerHTML=tasks(); if(tab==='alerts')m.innerHTML=alerts(); if(tab==='more')m.innerHTML=more(); if(tab==='calendar')setTimeout(loadWeather,0)}
+function calendar(){
+let d=new Date(cursor), h=`<div class="viewbar">${['day','week','month'].map(v=>`<button class="${view===v?'active':''}" onclick="view='${v}';render()">${v[0].toUpperCase()+v.slice(1)}</button>`).join('')}</div>`;
+h+=`<div class="datebar"><button onclick="move(-1)">‹</button><span>${view==='month'?d.toLocaleDateString('en-AU',{month:'long',year:'numeric'}):view==='week'?weekLabel(d):nice(d)}</span><button onclick="move(1)">›</button></div>`;
+h+=`<div class="card quote">“Don’t go broke trying to look rich.”<small>Daily financial thought — inspired by personal-finance radio advice</small></div>`;
+h+=weather();
+if(view==='day')h+=day(d); if(view==='week')h+=week(d); if(view==='month')h+=month(d);
+return h+`<div class="sectiontitle">Quick actions</div><div class="actions">
+<button class="action" onclick="openAdd('photo')">📷 Add photos</button><button class="action" onclick="openAdd('reminder')">🔔 Set reminder</button>
+<button class="action" onclick="openAdd('countdown')">⏳ Countdown</button><button class="action" onclick="report()">✉️ Summarise & email</button></div>`;
+}
+function weather(){return `<a class="weather-link" href="https://www.bom.gov.au/location/australia/western-australia/lower-west/bwa_pt053-perth" target="_blank" rel="noopener" aria-label="Open the official BOM weather forecast for Perth"><div class="card weather"><div style="font-size:38px">☀️</div><div><div class="temp" id="temp">--°</div><small id="wdesc">Loading local weather…</small></div><div style="margin-left:auto;text-align:right"><small>Forecast</small><br><b id="rain">--%</b> rain</div></div></a>`}
+function day(d){let ts=data.tasks.filter(t=>t.date===fmt(d)).sort((a,b)=>a.time.localeCompare(b.time)); let j=data.jobs[0]; return `<div class="sectiontitle">Today’s schedule <span class="link">${ts.length} items</span></div><div class="card">${ts.map(t=>`<div class="event"><div class="dot" style="background:var(--${t.type==='green'?'accent':t.type})"></div><div><b>${esc(t.time)} — ${esc(t.title)}</b><small>${esc(job(t.job)?.name||'General')}</small></div><span class="tag">${t.done?'Done':'Open'}</span></div>`).join('')||'<div>No tasks scheduled.</div>'}</div>
+<div class="sectiontitle">Current job</div><div class="card">${jobCard(j)}</div>`}
+function jobCard(j){return `<div class="jobhead"><div class="jobname">${esc(j.name)}</div><div class="pct">${j.pct}%</div></div><div class="bar"><div class="fill" style="width:${j.pct}%"></div></div><div class="metrics"><div class="metric"><b>${j.people.length}</b><small>People</small></div><div class="metric"><b>${j.used}/${j.allocated}</b><small>Hours</small></div><div class="metric"><b>${j.onSite}</b><small>Materials on site</small></div></div><button class="secondary" onclick="openJob(${j.id})">Open job</button>`}
+function weekLabel(d){let x=new Date(d),day=(x.getDay()+6)%7;x.setDate(x.getDate()-day);let e=new Date(x);e.setDate(e.getDate()+6);return `${x.getDate()}–${e.getDate()} ${e.toLocaleDateString('en-AU',{month:'short',year:'numeric'})}`}
+function week(d){let x=new Date(d),day=(x.getDay()+6)%7;x.setDate(x.getDate()-day);let days=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];let h='<div class="card week"><div class="cell head"></div>'+days.map((n,i)=>{let z=new Date(x);z.setDate(z.getDate()+i);return `<div class="cell head">${n}<br>${z.getDate()}</div>`}).join(''); for(let hr=7;hr<=17;hr++){h+=`<div class="cell">${hr}:00</div>`;for(let i=0;i<7;i++){let z=new Date(x);z.setDate(z.getDate()+i);let tt=data.tasks.filter(t=>t.date===fmt(z)&&parseInt(t.time)===hr);h+=`<div class="cell">${tt.map(t=>`<span class="pill ${t.type}">${esc(t.title)}</span>`).join('')}</div>`}}return h+'</div>'}
+function month(d){let y=d.getFullYear(),m=d.getMonth(),first=new Date(y,m,1),start=(first.getDay()+6)%7,days=new Date(y,m+1,0).getDate();let h='<div class="card"><div class="month">'+['M','T','W','T','F','S','S'].map(x=>`<div class="mday" style="min-height:auto;font-weight:800">${x}</div>`).join('');for(let i=0;i<start;i++)h+='<div class="mday"></div>';for(let n=1;n<=days;n++){let z=new Date(y,m,n),ts=data.tasks.filter(t=>t.date===fmt(z));h+=`<div class="mday ${fmt(z)===fmt(today)?'today':''}"><b>${n}</b><div class="dots">${ts.slice(0,4).map(t=>`<i style="background:var(--${t.type==='green'?'accent':t.type})"></i>`).join('')}</div></div>`}return h+'</div></div>'}
+function jobs(){return `<div class="sectiontitle">Current jobs <span class="link">${data.jobs.length} jobs</span></div>${data.jobs.map(j=>`<div class="card">${jobCard(j)}<button class="deletebtn" onclick="deleteEntry('jobs',${j.id})">Delete job</button></div>`).join('')}<button class="primary" onclick="openAdd('job')">＋ Add job</button>`}
+function tasks(){let ts=[...data.tasks].sort((a,b)=>(a.date+a.time).localeCompare(b.date+b.time));return `<div class="sectiontitle">Tasks & calls</div>${ts.map(t=>`<div class="card event"><div class="dot" style="background:var(--${t.type==='green'?'accent':t.type})"></div><div style="flex:1"><b>${esc(t.title)}</b><small>${nice(new Date(t.date+'T00:00:00'),{day:'numeric',month:'short'})} · ${t.time}</small></div><button class="iconbtn" style="color:#111;background:#eef1f3" onclick="toggleTask(${t.id})" aria-label="Mark task ${t.done?'open':'complete'}">${t.done?'✓':'○'}</button><button class="deleteicon" onclick="deleteEntry('tasks',${t.id})" aria-label="Delete task">🗑</button></div>`).join('')||'<div class="card">No tasks.</div>'}`}
+function daysUntil(s){return Math.ceil((new Date(s+'T23:59:59')-today)/86400000)}
+function alerts(){return `<div class="sectiontitle">Alerts & reminders</div>${data.reminders.map(r=>`<div class="card"><b>${esc(r.title)}</b><div style="color:var(--muted);margin-top:5px">${nice(new Date(r.date+'T00:00:00'),{weekday:'short',day:'numeric',month:'short'})} · ${r.time}</div><button class="secondary" onclick="calendarFile(${r.id})">🔔 Add phone calendar alarm</button><button class="deletebtn" onclick="deleteEntry('reminders',${r.id})">Delete reminder</button></div>`).join('')||'<div class="card">No reminders.</div>'}<div class="sectiontitle">Countdowns</div>${data.countdowns.map(c=>`<div class="card"><b>${esc(c.title)}</b><div class="temp">${Math.max(0,daysUntil(c.date))} days</div><small>${nice(new Date(c.date+'T00:00:00'))}</small><button class="deletebtn" onclick="deleteEntry('countdowns',${c.id})">Delete countdown</button></div>`).join('')||'<div class="card">No countdowns yet.</div>'}`}
+function more(){return `<div class="sectiontitle">More</div><div class="card"><b>SiteTrack V1</b><p style="color:var(--muted)">A field-first calendar and job management app.</p><button class="secondary" onclick="report()">Generate and email summary</button><button class="secondary" onclick="exportData()">Export backup</button></div><div class="card"><b>Storage</b><p style="color:var(--muted)">V1 saves your data on this device. Cloud sync is a future milestone.</p></div>`}
+function setTab(x){tab=x;render()}
+function openContextAdd(){if(tab==='jobs')return openAdd('job');if(tab==='alerts')return openAlertAdd();openAdd('task')}
+function openAlertAdd(){document.getElementById('sheet').innerHTML=`<h2>Add Alert</h2><p style="color:var(--muted);margin-top:-4px">What would you like to add?</p><button class="primary" onclick="openAdd('reminder')">🔔 Set Reminder / Alarm</button><button class="secondary" onclick="openAdd('countdown')">⏳ New Countdown</button><button class="secondary" onclick="closeModal()">Cancel</button>`;document.getElementById('modal').style.display='flex'}
+function move(n){let d=new Date(cursor);if(view==='month')d.setMonth(d.getMonth()+n);else d.setDate(d.getDate()+(view==='week'?7:1)*n);cursor=d;render()}
+function toggleTask(id){let t=data.tasks.find(x=>x.id==id);t.done=!t.done;save();render()}
+function deleteEntry(type,id){
+ const names={tasks:'task',reminders:'reminder',countdowns:'countdown',jobs:'job'};
+ if(!names[type])return;
+ if(type==='jobs'&&data.jobs.length<=1){alert('SiteTrack needs at least one job. Add another job before deleting this one.');return}
+ if(!confirm(`Delete this ${names[type]}? This cannot be undone.`))return;
+ data[type]=data[type].filter(x=>x.id!=id);
+ if(type==='jobs')data.tasks.forEach(t=>{if(t.job==id)t.job=data.jobs[0]?.id||null});
+ save();render();
+}
+function openJob(id,edit=false){let j=job(id);document.getElementById('sheet').innerHTML=edit?`<h2>Edit job</h2><div class="field"><label>Job name</label><input id="eName" value="${esc(j.name)}"></div><div class="field"><label>Status</label><input id="eStatus" value="${esc(j.status)}"></div><div class="field"><label>Completion %</label><input id="ePct" type="number" min="0" max="100" value="${j.pct}"></div><div class="field"><label>People (comma separated)</label><input id="ePeople" value="${esc(j.people.join(', '))}"></div><div class="field"><label>Hours allocated</label><input id="eAllocated" type="number" value="${j.allocated}"></div><div class="field"><label>Hours used</label><input id="eUsed" type="number" value="${j.used}"></div><div class="field"><label>Materials on site</label><input id="eOnSite" type="number" value="${j.onSite}"></div><div class="field"><label>Materials used</label><input id="eUsedMat" type="number" value="${j.usedMat}"></div><div class="field"><label>Materials ordered</label><input id="eOrdered" type="number" value="${j.ordered}"></div><div class="field"><label>Notes</label><textarea id="eNotes">${esc(j.notes)}</textarea></div><button class="primary" onclick="saveJob(${j.id})">Save changes</button><button class="secondary" onclick="openJob(${j.id})">Cancel</button>`:`<h2>${esc(j.name)}</h2><div class="bar"><div class="fill" style="width:${j.pct}%"></div></div><p><b>${j.pct}% complete</b> · ${esc(j.status)}</p><div class="metrics"><div class="metric"><b>${j.people.length}</b><small>People</small></div><div class="metric"><b>${j.used}/${j.allocated}</b><small>Hours</small></div><div class="metric"><b>${j.onSite}</b><small>On site</small></div></div><div class="sectiontitle">People</div><div class="card">${j.people.map(esc).join(' · ')||'No people assigned'}</div><div class="sectiontitle">Materials</div><div class="card">On site: ${j.onSite}<br>Used: ${j.usedMat}<br>Ordered: ${j.ordered}</div><div class="sectiontitle">Notes</div><div class="card">${esc(j.notes)||'No notes'}</div>${j.photos.length?`<div class="sectiontitle">Photos</div><div class="photo-grid">${j.photos.map(p=>`<img src="${p}" alt="Job photo">`).join('')}</div>`:''}<button class="primary" onclick="openJob(${j.id},true)">Edit job</button><button class="secondary" onclick="closeModal()">Close</button>`;document.getElementById('modal').style.display='flex'}
+function saveJob(id){let j=job(id);j.name=document.getElementById('eName').value.trim()||j.name;j.status=document.getElementById('eStatus').value.trim();j.pct=Math.min(100,Math.max(0,+document.getElementById('ePct').value||0));j.people=document.getElementById('ePeople').value.split(',').map(x=>x.trim()).filter(Boolean);j.allocated=+document.getElementById('eAllocated').value||0;j.used=+document.getElementById('eUsed').value||0;j.onSite=+document.getElementById('eOnSite').value||0;j.usedMat=+document.getElementById('eUsedMat').value||0;j.ordered=+document.getElementById('eOrdered').value||0;j.notes=document.getElementById('eNotes').value.trim();save();closeModal();render()}
+function openAdd(type='task'){
+ let title=type==='job'?'Add Job':type==='reminder'?'Set Reminder':type==='photo'?'Add Photo':type==='countdown'?'New Countdown':'Add Task';
+ let body='';
+ if(type==='photo') body=`<div class="field"><label>Choose photos</label><input id="photoInput" type="file" accept="image/*" capture="environment" multiple></div>`;
+ else if(type==='countdown') body=`<div class="field"><label>Name</label><input id="countTitle" placeholder="e.g. Practical completion"></div><div class="field"><label>Countdown to</label><input id="countDate" type="date" value="${fmt(new Date(today.getTime()+86400000))}"></div>`;
+ else if(type==='job') body=`<div class="field"><label>Job name</label><input id="newTitle" placeholder="e.g. Smith Residence"></div><div class="field"><label>Completion %</label><input id="newPct" type="number" min="0" max="100" value="0"></div>`;
+ else body=`<div class="field"><label>Title</label><input id="newTitle" placeholder="e.g. Call electrician"></div><div class="field"><label>Date</label><input id="newDate" type="date" value="${fmt(cursor)}"></div><div class="field"><label>Time</label><input id="newTime" type="time" value="09:00"></div>${type==='reminder'?'':`<div class="field"><label>Colour</label><select id="newType"><option value="orange">Call / To do</option><option value="red">Materials to order</option><option value="purple">Delivery / On site</option><option value="blue">Inspection / Meeting</option><option value="green">Completed</option></select></div>`}`;
+ document.getElementById('sheet').innerHTML=`<h2>${title}</h2>${body}<button class="primary" onclick="saveAdd('${type}')">Save</button><button class="secondary" onclick="closeModal()">Cancel</button>`;
+ document.getElementById('modal').style.display='flex';
+}
+function saveAdd(type){if(type==='photo'){let files=document.getElementById('photoInput').files;if(!files.length)return closeModal();let j=data.jobs[0];[...files].forEach(f=>{let r=new FileReader();r.onload=()=>{j.photos.push(r.result);save()};r.readAsDataURL(f)});alert('Photo added to the current job.');closeModal();return}
+if(type==='countdown'){let d=document.getElementById('countDate').value;if(!d)return;data.countdowns.push({id:Date.now(),title:document.getElementById('countTitle').value.trim()||'Project milestone',date:d});save();closeModal();tab='alerts';render();return}
+let title=document.getElementById('newTitle').value.trim();if(!title)return;if(type==='job'){data.jobs.push({id:Date.now(),name:title,people:[],status:'Not started',pct:+document.getElementById('newPct').value||0,allocated:0,used:0,onSite:0,usedMat:0,ordered:0,notes:'',photos:[]});save();closeModal();render();return}let newId=Date.now();data[type==='reminder'?'reminders':'tasks'].push({id:newId,date:document.getElementById('newDate').value,time:document.getElementById('newTime').value,title,type:type==='reminder'?'reminder':document.getElementById('newType').value,job:1,done:false});save();closeModal();render();if(type==='reminder')setTimeout(()=>calendarFile(newId),100)}
+function closeModal(){document.getElementById('modal').style.display='none'}
+function icsText(s){return String(s).replace(/\\/g,'\\\\').replace(/,/g,'\\,').replace(/;/g,'\\;').replace(/\n/g,'\\n')}
+function calendarFile(id){let r=data.reminders.find(x=>x.id==id);if(!r)return;let start=r.date.replaceAll('-','')+'T'+r.time.replace(':','')+'00',endDate=new Date(r.date+'T'+r.time+':00');endDate.setMinutes(endDate.getMinutes()+30);let end=fmt(endDate).replaceAll('-','')+'T'+String(endDate.getHours()).padStart(2,'0')+String(endDate.getMinutes()).padStart(2,'0')+'00';let ics=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//SiteTrack//V1//EN','CALSCALE:GREGORIAN','BEGIN:VEVENT','UID:'+r.id+'@sitetrack','DTSTART;TZID=Australia/Perth:'+start,'DTEND;TZID=Australia/Perth:'+end,'SUMMARY:'+icsText(r.title),'DESCRIPTION:SiteTrack reminder','BEGIN:VALARM','TRIGGER:PT0S','ACTION:DISPLAY','DESCRIPTION:'+icsText(r.title),'END:VALARM','END:VEVENT','END:VCALENDAR'].join('\r\n');let a=document.createElement('a');a.href=URL.createObjectURL(new Blob([ics],{type:'text/calendar'}));a.download='sitetrack-reminder.ics';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);alert('Open the downloaded calendar file, then tap Save. Make sure the event notification is set for the event time.')}
+async function loadWeather(){try{let p=await fetch('https://api.open-meteo.com/v1/forecast?latitude=-31.95&longitude=115.86&current=temperature_2m,precipitation&daily=precipitation_probability_max&timezone=Australia%2FPerth');let x=await p.json();document.getElementById('temp').textContent=Math.round(x.current.temperature_2m)+'°';document.getElementById('wdesc').textContent='Perth • live forecast';document.getElementById('rain').textContent=(x.daily.precipitation_probability_max?.[0]??0)+'%'}catch(e){document.getElementById('wdesc').textContent='Weather unavailable offline'}}
+function report(){let j=data.jobs[0],ts=data.tasks.filter(t=>t.date===fmt(cursor));let text=`${j.name} — Site Summary\\n${nice(cursor)}\\n\\nStatus: ${j.status}\\nProgress: ${j.pct}%\\nStaff: ${j.people.join(', ')||'None assigned'}\\nHours: ${j.used}/${j.allocated}\\nMaterials on site: ${j.onSite}\\nMaterials used: ${j.usedMat}\\nMaterials ordered: ${j.ordered}\\n\\nSchedule:\\n${ts.map(t=>t.time+' '+t.title).join('\\n')||'No items'}\\n\\nNotes:\\n${j.notes||'None'}`;let subject=encodeURIComponent(j.name+' Site Summary');location.href=`mailto:?subject=${subject}&body=${encodeURIComponent(text)}`}
+function exportData(){let a=document.createElement('a');a.href='data:application/json,'+encodeURIComponent(JSON.stringify(data,null,2));a.download='siteflow-backup.json';a.click()}
+document.getElementById('modal').addEventListener('click',e=>{if(e.target.id==='modal')closeModal()});
+save();render();
+</script>
+<script>if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});</script></body>
+</html>
