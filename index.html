@@ -75,7 +75,7 @@ data.jobs.forEach(j=>{
 });
 let tab='calendar',view='day',cursor=new Date(today);
 function save(){localStorage.setItem(STORE_KEY,JSON.stringify(data))}
-function fmt(d){return d.toISOString().slice(0,10)}
+function fmt(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
 function nice(d,opt={weekday:'long',day:'numeric',month:'short',year:'numeric'}){return d.toLocaleDateString('en-AU',opt)}
 function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 function job(id){return data.jobs.find(x=>x.id==id)}
