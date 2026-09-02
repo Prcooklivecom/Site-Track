@@ -50,6 +50,8 @@ nav{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid 
 <script>
 const STORE_KEY='sitetrack-v1';
 const today=new Date(); today.setHours(0,0,0,0);
+ const quotes=['Spend less than you earn.','A budget gives every dollar a job.','Small savings build strong futures.','Buy what you need, not what impresses others.','Debt steals from tomorrow.','Plan first, spend second.','Save before you spend.','Financial peace starts with a plan.','Progress matters more than perfection.','Make your money work as hard as you do.'];
+const dailyQuote=quotes[Math.floor(today.getTime()/86400000)%quotes.length];
 let data=JSON.parse(localStorage.getItem(STORE_KEY)||localStorage.getItem('siteflow')||'null')||{
  jobs:[{id:1,name:'Riverside Apartments',people:['John','Mark','Steve','Dave','Chris','Ben'],status:'In progress',pct:58,allocated:240,used:128,onSite:42,usedMat:68,ordered:23,notes:'Concrete pour completed on Level 1. All inspections passed.',photos:[]}],
  tasks:[
@@ -83,7 +85,7 @@ function render(){document.querySelectorAll('nav button').forEach(b=>b.classList
 function calendar(){
 let d=new Date(cursor), h=`<div class="viewbar">${['day','week','month'].map(v=>`<button class="${view===v?'active':''}" onclick="view='${v}';render()">${v[0].toUpperCase()+v.slice(1)}</button>`).join('')}</div>`;
 h+=`<div class="datebar"><button onclick="move(-1)">‹</button><span>${view==='month'?d.toLocaleDateString('en-AU',{month:'long',year:'numeric'}):view==='week'?weekLabel(d):nice(d)}</span><button onclick="move(1)">›</button></div>`;
-h+=`<div class="card quote">“Don’t go broke trying to look rich.”<small>Daily financial thought — inspired by personal-finance radio advice</small></div>`;
+h+=`<div class="card quote">“${dailyQuote}”<small>Daily financial thought — inspired by personal-finance radio advice</small></div>`;
 h+=weather();
 if(view==='day')h+=day(d); if(view==='week')h+=week(d); if(view==='month')h+=month(d);
 return h+`<div class="sectiontitle">Quick actions</div><div class="actions">
